@@ -35,23 +35,14 @@ public class ExportCypherEnterpriseFeaturesTest {
 
     @BeforeClass
     public static void beforeAll() {
-        assumeFalse(isRunningInCI());
-        TestUtil.ignoreException(() -> {
-            // We build the project, the artifact will be placed into ./build/libs
-            neo4jContainer = createEnterpriseDB(!TestUtil.isRunningInCI())
-                    .withInitScript("init_neo4j_export_csv.cypher");
-            neo4jContainer.start();
-        }, Exception.class);
-        assumeNotNull(neo4jContainer);
-        assumeTrue("Neo4j Instance should be up-and-running", neo4jContainer.isRunning());
+        neo4jContainer = createEnterpriseDB(!TestUtil.isRunningInCI()).withInitScript("init_neo4j_export_csv.cypher");
+        neo4jContainer.start();
         session = neo4jContainer.getSession();
     }
 
     @AfterClass
     public static void afterAll() {
-        if (neo4jContainer != null && neo4jContainer.isRunning()) {
-            neo4jContainer.close();
-        }
+        neo4jContainer.close();
     }
 
     private static void beforeTwoLabelsWithOneCompoundConstraintEach() {
