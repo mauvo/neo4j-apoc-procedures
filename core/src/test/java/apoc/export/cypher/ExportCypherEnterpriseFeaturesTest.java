@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.neo4j.driver.Session;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -133,6 +134,7 @@ public class ExportCypherEnterpriseFeaturesTest {
     }
 
     private void assertExportStatement(String expectedStatement, Map<String, Object> result, String fileName) {
+        System.out.println( Arrays.toString( result.keySet().toArray() ) ); // daniel
         assertEquals(expectedStatement, isRunningInCI() ? result.get("cypherStatements") : readFileToString(new File(directory, fileName)));
     }
 }
